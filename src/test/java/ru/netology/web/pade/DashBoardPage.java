@@ -6,6 +6,8 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.web.data.DataHelper;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -37,12 +39,7 @@ public class DashBoardPage {
         var start = text.indexOf(balanceStart);
         var finish = text.indexOf(balanceFinish);
         var value = text.substring(start + balanceStart.length(), finish);
-        // Удаляем пробелы и заменяем запятую на точку (если есть)
-            value = value.replaceAll("\\s+", "").replace(",", ".");
-        // Если есть копейки, преобразуем их в целые рубли
-        if (value.contains(".")) {
-            value = value.substring(0, value.indexOf("."));
-        }
+
 
         return Integer.parseInt(value);
     }
@@ -56,6 +53,9 @@ public class DashBoardPage {
         return this;
     }
 
-
+    public void waitForDashboardPage() {
+        $("h1").shouldHave(Condition.exactText("Ваши карты"))
+                .shouldBe(Condition.visible, Duration.ofSeconds(15));
+    }
 
 }
